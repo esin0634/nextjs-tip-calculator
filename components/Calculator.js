@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+// TODO: start coding here!
 
 const Calculator = () => {
-    // TODO: start coding here!
+    const [number, setNumber] = useState(0)
+    const [tip, setTip] = useState(0)
+    const [numberOfPeople, setNumberOfPeople] = useState(0)
+    const [tipAmount, setTipAmount] = useState(0)
+    const [total, setTotal] = useState(0)
+    
+    function Calculate(){
+        const resultTip = (number*tip/100)/numberOfPeople
+        setTipAmount(resultTip)
+        
+        const resultTotal = (number/numberOfPeople + resultTip)
+        setTotal(resultTotal)
 
+        console.log(number, tip, numberOfPeople)
+    }
+    
     return (
         <main>
             <img
@@ -23,6 +39,9 @@ const Calculator = () => {
                             placeholder="0"
                             name="Total bill value"
                             id="totalBill"
+                            value = {number}
+                            onChange = {e => setNumber(e.target.value)}
+
                         />
                     </div>
 
@@ -33,17 +52,17 @@ const Calculator = () => {
                                 valid</small>
                         </div>
                         <div className="input-tips-container">
-                            <button className="body-l-text input-tip" id="tip5">5%
+                            <button onClick={()=> setTip(5)} className="body-l-text input-tip" id="tip5">5%
                             </button>
-                            <button className="body-l-text input-tip" id="tip10">10%
+                            <button onClick={()=> setTip(10)} className="body-l-text input-tip" id="tip10">10%
                             </button>
-                            <button className="body-l-text input-tip" id="tip15">15%
+                            <button onClick={()=> setTip(15)} className="body-l-text input-tip" id="tip15">15%
                             </button>
-                            <button className="body-l-text input-tip" id="tip25">25%
+                            <button onClick={()=> setTip(25)} className="body-l-text input-tip" id="tip25">25%
                             </button>
-                            <button className="body-l-text input-tip" id="tip50">50%
+                            <button onClick={()=> setTip(50)} className="body-l-text input-tip" id="tip50">50%
                             </button>
-                            <input type="number" className="body-l-text input-field" placeholder="Custom"
+                            <input onChange={e => setTip(e.target.value)} type="number" className="body-l-text input-field" placeholder="Custom"
                                    id="totalTipPercentage"></input>
                         </div>
                     </div>
@@ -60,8 +79,16 @@ const Calculator = () => {
                             placeholder="0"
                             name="Number of people"
                             id="numberOfPeople"
+                            value = {numberOfPeople}
+                            onChange={(e) => {
+                                setNumberOfPeople(e.target.value);
+                              }}
 
                         />
+                    </div>
+                    <div className="input-tips-container">
+                            <button onClick={Calculate} className="body-sm-text input-tip" id="calculate">calculate
+                            </button>          
                     </div>
                 </div>
                 <div className="card-right">
@@ -70,16 +97,22 @@ const Calculator = () => {
                             <b className="body-text card-price-title">Tip Amount</b>
                             <p className="body-s-text card-price-subtitle">/ person</p>
                         </div>
-                        <strong className="strong-text card-price-value" id="tipAmount">$0.00</strong>
+                        <strong className="strong-text card-price-value" id="tipAmount">${tipAmount}</strong>
                     </section>
                     <section className="card-price-container">
                         <div>
                             <b className="body-text card-price-title">Total</b>
                             <p className="body-s-text card-price-subtitle">/ person</p>
                         </div>
-                        <strong className="strong-text card-price-value" id="totalPrice">$0.00</strong>
+                        <strong className="strong-text card-price-value" id="totalPrice">${total}</strong>
                     </section>
-                    <button className="btn btn-primary btn-reset">Reset</button>
+                    <button onClick={() => {
+                        setNumber(0);
+                        setTip(0);
+                        setNumberOfPeople(0);
+                        setTipAmount(0);
+                        setTotal(0)
+                    }} className="btn btn-primary btn-reset">Reset</button>
                 </div>
             </section>
         </main>
