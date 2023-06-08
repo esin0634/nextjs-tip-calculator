@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // TODO: start coding here!
 
 const Calculator = () => {
-    const [number, setNumber] = useState(0)
+    const [number, setNumber] = useState("")
     const [tip, setTip] = useState(0)
-    const [numberOfPeople, setNumberOfPeople] = useState(0)
-    const [tipAmount, setTipAmount] = useState(0)
-    const [total, setTotal] = useState(0)
+    const [numberOfPeople, setNumberOfPeople] = useState("")
+    const [tipAmount, setTipAmount] = useState("0.00")
+    const [total, setTotal] = useState("0.00")
     
-    function Calculate(){
-        const resultTip = (number*tip/100)/numberOfPeople
-        setTipAmount(resultTip)
-        
-        const resultTotal = (number/numberOfPeople + resultTip)
-        setTotal(resultTotal)
+    const tipAmountHandler = (e) => {
+        setTip(e.target.value)
+    }
 
-        console.log(number, tip, numberOfPeople)
+
+    useEffect(() => {
+        Calculate();
+        }, [number, tip, numberOfPeople]);
+
+
+    const Calculate = () => {
+        if(number !== "" & numberOfPeople !== ""){
+            let tipPercentage = tip;
+
+            const resultTip = parseFloat( (number * tipPercentage) / 100 / numberOfPeople).toFixed(2)
+            setTipAmount(resultTip)
+            
+            const resultTotal = parseFloat((parseFloat(resultTip) + parseFloat(number)) / numberOfPeople ).toFixed(2)
+            setTotal(resultTotal)
+
+            console.log(number, tip, numberOfPeople)
+        }
     }
     
     return (
@@ -52,7 +66,7 @@ const Calculator = () => {
                                 valid</small>
                         </div>
                         <div className="input-tips-container">
-                            <button onClick={()=> setTip(5)} className="body-l-text input-tip" id="tip5">5%
+                            <button onClick={tipAmountHandler} value={5} className="body-l-text input-tip" id="tip5">5%
                             </button>
                             <button onClick={()=> setTip(10)} className="body-l-text input-tip" id="tip10">10%
                             </button>
@@ -82,14 +96,15 @@ const Calculator = () => {
                             value = {numberOfPeople}
                             onChange={(e) => {
                                 setNumberOfPeople(e.target.value);
+
                               }}
 
                         />
                     </div>
-                    <div className="input-tips-container">
+                    {/* <div className="input-tips-container">
                             <button onClick={Calculate} className="body-sm-text input-tip" id="calculate">calculate
                             </button>          
-                    </div>
+                    </div> */}
                 </div>
                 <div className="card-right">
                     <section className="card-price-container">
@@ -107,11 +122,11 @@ const Calculator = () => {
                         <strong className="strong-text card-price-value" id="totalPrice">${total}</strong>
                     </section>
                     <button onClick={() => {
-                        setNumber(0);
-                        setTip(0);
-                        setNumberOfPeople(0);
-                        setTipAmount(0);
-                        setTotal(0)
+                        setNumber("");
+                        setTip("");
+                        setNumberOfPeople("");
+                        setTipAmount("0.00");
+                        setTotal("0.00")
                     }} className="btn btn-primary btn-reset">Reset</button>
                 </div>
             </section>
